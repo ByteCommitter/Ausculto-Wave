@@ -1,0 +1,4 @@
+Normal
+Asthma
+Pnemonia
+COPD
