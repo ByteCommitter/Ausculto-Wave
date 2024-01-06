@@ -26,9 +26,8 @@ Include some screenshots of your app here.
 * TensorFlow
 
 ## Authors
--Gurumurthy V
--Harshit Juneja
--Rishabh Mittal
+- Gurumurthy V
+- Harshit Juneja
+- Rishabh Mittal
 
 
-Disclaimer: The assets folder is not included in this repository. The assets folder contains the tflite models which are used in the prediction of the disease, however it being too large to fit in
