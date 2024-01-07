@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/AddAudioPage.dart';
-import 'package:test/AddImagePage.dart';
+import 'package:test/Pages/AddAudioPage.dart';
+import 'package:test/Pages/AddImagePage.dart';
 
 class HomeScreen extends StatefulWidget{
   @override

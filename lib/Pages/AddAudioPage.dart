@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:test/AddImagePage.dart';
+import 'package:test/Pages/AddImagePage.dart';
 
 class AddAudioFile extends StatefulWidget {
   const AddAudioFile({Key? key}) : super(key: key);
