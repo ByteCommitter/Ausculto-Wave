@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //to do with the different pages in the bar
     items: const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-        icon: Icon(Icons.home_outlined),
+        icon: Icon(Icons.add),
         label: "Home",
       ),
       BottomNavigationBarItem(

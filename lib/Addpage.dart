@@ -10,7 +10,7 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   bool _loading = true;
-  bool _newloading= true;
+  //bool _newloading= true;
   late File _image;
   late List _output;
   String path_to_your_image = '';
@@ -28,8 +28,11 @@ class _AddScreenState extends State<AddScreen> {
   @override
   void dispose() {
     //dis function disposes and clears our memory
+    //Tflite.close();
+    if (mounted) {
+      Tflite.close();
+    }
     super.dispose();
-    Tflite.close();
   }
 
 
@@ -74,19 +77,18 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Widget outputWidget() {
-  if (_output == null) {
-    return Container();
-  } else if (_output[0]['label'] == 'Asthma') {
+  if (_output[0]['label'] == 'Asthma') {
     print("Condition 1 met - Asthma");
     return FutureBuilder<List<String>>(
   future: () async {
     try {
       print("Closed previous model");
-
+      bool isInterpreterOpen = false;
       await Tflite.loadModel(
         model: 'assets/models/NvsA.tflite',
         labels: 'assets/models/labelsA.txt',
       );
+      isInterpreterOpen = true;
       print("ModelA loaded successfully");
       var output = await Tflite.runModelOnImage(
         path: path_to_your_image, 
@@ -108,6 +110,17 @@ class _AddScreenState extends State<AddScreen> {
         result = "Asthma";
       }
       //await Tflite.close(); // Close ModelA after inference
+      if (isInterpreterOpen) {
+        try {
+          print("About to close model");
+          await Tflite.close();
+          print("Model closed successfully");
+          isInterpreterOpen = false;
+        } catch (e) {
+          print("Error closing model: $e");
+        }
+      }
+     
       print("ModelA closed successfully");
       return [result];
     } catch (error) {
@@ -115,24 +128,17 @@ class _AddScreenState extends State<AddScreen> {
       return ["Error"];
     }
   }(),
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const CircularProgressIndicator();
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    } else {
-      return Text('Result: ${snapshot.data![0]}');
-    }
-  }
+     builder: (context, snapshot) {
+      if (snapshot.connectionState != ConnectionState.done) {
+        return const CircularProgressIndicator(); // Show indicator only while loading
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        return Text('Result: ${snapshot.data![0]}');
+      }
+    },
 
-);
-    
-    
-    
-    
-    
-    
-    
+  );
     /*FutureBuilder<List<dynamic>>(
       future: () async {
         try {
@@ -212,7 +218,7 @@ class _AddScreenState extends State<AddScreen> {
           }
         },
         );*/
-      }
+}
   
    else if (_output[0]['label'] == 'Pnemonia') {
     print('Condition 2 met - Pnemonia');
@@ -220,7 +226,6 @@ class _AddScreenState extends State<AddScreen> {
       future: () async {
         try {
           print("Closed previous model");
-
           await Tflite.loadModel(
             model: 'assets/models/NvsP.tflite',
             labels: 'assets/models/labelsP.txt',
@@ -267,51 +272,52 @@ class _AddScreenState extends State<AddScreen> {
   else if (_output[0]['label'] == 'COPD') {
     print('Condition 3 met - COPD');
     return FutureBuilder<List<String>>(
-      future: () async {
-        try {
-          print("Closed previous model");
+  future: () async {
+    try {
+      print("Closed previous model");
+      await Tflite.loadModel(
+        model: 'assets/models/NvsC_best.tflite',
+        labels: 'assets/models/labelsC.txt',
+      );
+      print("ModelA loaded successfully");
+      var output = await Tflite.runModelOnImage(
+        path: path_to_your_image, 
+        numResults: 2,
+        threshold:0.2,
+        imageMean: 127.5,
+        imageStd: 127.5,
+      );
+      print("Model C run successfully");
+      print(output);
 
-          await Tflite.loadModel(
-            model: 'assets/models/NvsC_best.tflite',
-            labels: 'assets/models/labelsC.txt',
-          );
-          print("Model C loaded successfully");
-          var output = await Tflite.runModelOnImage(
-            path: path_to_your_image, 
-            numResults: 2,
-            threshold:0.2,
-            imageMean: 127.5,
-            imageStd: 127.5,
-          );
-          print("Model C run successfully");
-          print(output);
+      String result;
+      if(output?[0]['confidence'] > 0.5){
+        print("Normal");
+        result = "Normal";
+      }
+      else{
+        print("Asthma");
+        result = "Asthma";
+      }
+      //await Tflite.close(); // Close ModelA after inference
+      print("Model Cs closed successfully");
+      return [result];
+    } catch (error) {
+      print(error); // Log errors for debugging
+      return ["Error"];
+    }
+  }(),
+     builder: (context, snapshot) {
+      if (snapshot.connectionState != ConnectionState.done) {
+        return const CircularProgressIndicator(); // Show indicator only while loading
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        return Text('Result: ${snapshot.data![0]}');
+      }
+    },
 
-          String result;
-          if(output?[0]['confidence'] > 0.5){
-            print("Normal");
-            result = "Normal";
-          }
-          else{
-            print("COPD");
-            result = "COPD";
-          }
-          //await Tflite.close(); // Close ModelA after inference
-          print("Model C closed successfully");
-          return [result];
-        } catch (error) {
-          print(error); // Log errors for debugging
-          return ["Error"];
-        }
-      }(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return Text('Result: ${snapshot.data![0]}');
-        }
-      });
+  );
   } 
   
   
@@ -366,7 +372,7 @@ class _AddScreenState extends State<AddScreen> {
 
 
                               // ignore: unnecessary_null_comparison
-                              _output != null
+                              _output != null && _output.isNotEmpty
                                   ? (_output[0]['label'] == 'Normal'
                                       ? const Text('Normal')
                                       : outputWidget())
