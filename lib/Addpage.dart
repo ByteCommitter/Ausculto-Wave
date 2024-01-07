@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:restart_app/restart_app.dart';
 
 class AddScreen extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   bool _loading = true;
-  //bool _newloading= true;
+  bool _Visibility= true;
   late File _image;
   late List _output;
   String path_to_your_image = '';
@@ -110,16 +111,6 @@ class _AddScreenState extends State<AddScreen> {
         result = "Asthma";
       }
       //await Tflite.close(); // Close ModelA after inference
-      if (isInterpreterOpen) {
-        try {
-          print("About to close model");
-          await Tflite.close();
-          print("Model closed successfully");
-          isInterpreterOpen = false;
-        } catch (e) {
-          print("Error closing model: $e");
-        }
-      }
      
       print("ModelA closed successfully");
       return [result];
@@ -393,8 +384,34 @@ class _AddScreenState extends State<AddScreen> {
                   children: [
                     
                     const SizedBox(height: 30),
-                    GestureDetector(
-                      onTap: pickGalleryImage,
+                    Visibility( visible: _Visibility,
+                      child: 
+                        GestureDetector(
+                          onTap:(){
+                            pickGalleryImage();
+                            setState(() {
+                              _Visibility = false;
+                            });
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 200,
+                            alignment: Alignment.center,
+                            padding:
+                              const EdgeInsets.symmetric(horizontal: 24, vertical: 17),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child:const Text(
+                              'Pick From Gallery',
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                        ),),
+                    //const SizedBox(height: 30),
+                    Visibility( visible: !_Visibility,
+                      child: GestureDetector(
+                      onTap: Restart.restartApp,
                       child: Container(
                         width: MediaQuery.of(context).size.width - 200,
                         alignment: Alignment.center,
@@ -409,7 +426,8 @@ class _AddScreenState extends State<AddScreen> {
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ),
-                    ),
+                    )),
+                     
                   ],
                 ),
               ),
