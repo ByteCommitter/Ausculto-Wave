@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddScreen extends StatefulWidget {
   @override
@@ -67,6 +68,11 @@ class _AddScreenState extends State<AddScreen> {
 
   pickGalleryImage() async {
     //this function to grab the image from gallery
+    var status = await Permission.photos.status;
+    if (!status.isGranted) {
+      await Permission.photos.request();
+    }
+
     var image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) return null;
 

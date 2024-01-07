@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/Addpage.dart';
+import 'package:test/AddAudioPage.dart';
+import 'package:test/AddImagePage.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -52,14 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // For example:
           // FirstTab(),
           // SecondTab(),....
-            ListView(
-              //Main Home Page here:
-
-                  children: const [
-                    Text("   Top Categories",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold)),
-                      
-                      
-              ]),
+            AddAudioFile(),
             
             AddScreen(),
 
