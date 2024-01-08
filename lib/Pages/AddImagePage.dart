@@ -109,16 +109,16 @@ class _AddScreenState extends State<AddScreen> {
 
       String result;
       if(output?[0]['confidence'] > 0.5){
-        print("Normal");
-        result = "Normal";
-      }
-      else{
         print("Asthma");
         result = "Asthma";
       }
+      else{
+        print("Normal");
+        result="Normal";
+      }
       //await Tflite.close(); // Close ModelA after inference
      
-      print("ModelA closed successfully");
+      print("Model A closed successfully");
       return [result];
     } catch (error) {
       print(error); // Log errors for debugging
@@ -135,86 +135,8 @@ class _AddScreenState extends State<AddScreen> {
       }
     },
 
-  );
-    /*FutureBuilder<List<dynamic>>(
-      future: () async {
-        try {
-          //await Tflite.close(); // Close any previously opened models//the close function is not working, and that's the factor behind the endless spinning
-          print("Closed previous model");
-
-          await Tflite.loadModel(
-            model: 'assets/models/NvsA.tflite',
-            labels: 'assets/models/labelsA.txt',
-          );
-          print("ModelA loaded successfully");
-          var output = await Tflite.runModelOnImage(
-            path: path_to_your_image, 
-            numResults: 2,
-            threshold:0.2,
-            imageMean: 127.5,
-            imageStd: 127.5,
-          );
-          print("Model A run successfully");
-          print(output);
-          if(output?[0]['confidence'] > 0.5){
-            print("Normal");
-            Text("Normal");
-          }
-          else{
-            print("Asthma");
-            Text("Asthma");
-          }
-          await Tflite.close(); // Close ModelA after inference
-          print("ModelA closed successfully");
-          return output ?? [];
-        } catch (error) {
-          print(error); // Log errors for debugging
-          return [];
-        }
-      }(),
-      builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-          ? const CircularProgressIndicator()
-          : snapshot.hasError
-              ? Text('Error: ${snapshot.error}')
-              : Text('Result: ${snapshot.data![0]['label']}'),
-    );*/
-    
-    //Old code, always spinning...
-    /*
-    FutureBuilder<List<dynamic>>(
-      future: () async {
-        await Tflite.close();
-        await Tflite.loadModel(
-          model: 'assets/models/NvsA.tflite',
-          labels: 'assets/models/labelsA.txt',
-        );
-        var output = await Tflite.runModelOnImage(
-          path: path_to_your_image, 
-          numResults:4, //the amout of categories our neural network can predict 
-          //threshold: 0.5,
-          imageMean: 127.5,
-          imageStd: 127.5,
-        );
-        await Tflite.close();
-        return output ?? [];
-      }(),
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          String result;
-                if (snapshot.data != null && snapshot.data!.isNotEmpty) {
-                  double confidence = snapshot.data![0]['confidence'];
-                  result = confidence > 0.5 ? 'Asthma' : 'Normal';
-                } else {
-                  result = 'No result';
-                }
-                return Text('Result: $result');
-          }
-        },
-        );*/
+  );  
+   
 }
   
    else if (_output[0]['label'] == 'Pnemonia') {
@@ -227,7 +149,7 @@ class _AddScreenState extends State<AddScreen> {
             model: 'assets/models/NvsP.tflite',
             labels: 'assets/models/labelsP.txt',
           );
-          print("ModelA loaded successfully");
+          print("Model P loaded successfully");
           var output = await Tflite.runModelOnImage(
             path: path_to_your_image, 
             numResults: 2,
@@ -240,12 +162,12 @@ class _AddScreenState extends State<AddScreen> {
 
           String result;
           if(output?[0]['confidence'] > 0.5){
-            print("Normal");
-            result = "Normal";
+            print("Pnemonia");
+            result = "Pnemonia";
           }
           else{
-            print("Pnemonia");
-            result = "Asthma";
+            print("Normal");
+            result="Normal";
           }
           //await Tflite.close(); // Close ModelA after inference
           print("Model P closed successfully");
@@ -276,7 +198,7 @@ class _AddScreenState extends State<AddScreen> {
         model: 'assets/models/NvsC_best.tflite',
         labels: 'assets/models/labelsC.txt',
       );
-      print("ModelA loaded successfully");
+      print("Model C loaded successfully");
       var output = await Tflite.runModelOnImage(
         path: path_to_your_image, 
         numResults: 2,
@@ -289,12 +211,12 @@ class _AddScreenState extends State<AddScreen> {
 
       String result;
       if(output?[0]['confidence'] > 0.5){
-        print("Normal");
-        result = "Normal";
+        print("COPD");
+        result = "COPD";
       }
       else{
-        print("Asthma");
-        result = "Asthma";
+        print("Normal");
+        result = "Normal";
       }
       //await Tflite.close(); // Close ModelA after inference
       print("Model Cs closed successfully");

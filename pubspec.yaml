@@ -42,6 +42,7 @@ dependencies:
   tflite: ^1.1.2
   restart_app: ^1.2.1
   http: ^1.1.0
+  flutter_native_splash: ^2.3.7
 
 dev_dependencies:
   flutter_test:
@@ -95,3 +96,18 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/dev.png
+  branding: assets/dev.png
+  color_dark: "#121212"
+  image_dark: assets/dev.png
+  branding_dark: assets/dev.png
+
+  android_12:
+    image: assets/dev.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/dev.png
+    icon_background_color_dark: "#121212"
+
+  web: false
