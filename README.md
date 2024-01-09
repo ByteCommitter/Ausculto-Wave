@@ -25,9 +25,5 @@ Include some screenshots of your app here.
 * [Flutter](https://flutter.dev/) 
 * TensorFlow
 
-## Authors
-- Gurumurthy V
-- Harshit Juneja
-- Rishabh Mittal
 
 
